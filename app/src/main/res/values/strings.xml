@@ -15,6 +15,9 @@
     official Github!</string>
     <string name="supporttext">If you need help or have some questions, feel free to contact me through E-Mail. Or if you are feeling lucky and you want to support the work, feel free to buy me a coffee instead :D</string>
     <string name="title_activity_setupfreakslab">setupfreakslab</string>
+    <string name="bioTitleText">Biography</string>
+    <string name="friendTitleText">Friend</string>
+    <string name="addFriendButton">Add as Friend</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -23,6 +26,7 @@
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
+    <string name="debug_header">Debug</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
@@ -34,4 +38,15 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_profile">profileActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

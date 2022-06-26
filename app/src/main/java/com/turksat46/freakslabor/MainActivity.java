@@ -11,11 +11,14 @@ package com.turksat46.freakslabor;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -23,7 +26,9 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
@@ -263,9 +268,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         newPersonList = (ListView)findViewById(R.id.listView1);
 
-        //Start scanning
-        scanCollars();
-
         /*For testing purposes!!
         newPerson data[] = new newPerson[]
                 {
@@ -311,8 +313,72 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             }
         });
 
-        //Bluetooth
+        //Check permissions
+        if(!checkPermission(Manifest.permission.BLUETOOTH_ADMIN)){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Oh no... :(");
+            builder.setMessage("I didn't get the necessary permissions from you :( Don't worry, I can show you, what I need, if you want me to :D");
+            builder.setNegativeButton("NO >(", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            builder.setPositiveButton("Ok, let's go!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(MainActivity.this, presentation.class);
+                    startActivity(intent);
+                }
+            });
+            builder.create().show();
 
+        }
+
+        if(!checkPermission(Manifest.permission.BLUETOOTH_SCAN)){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Oh no... :(");
+            builder.setMessage("I didn't get the necessary permissions from you :( Don't worry, I can show you, what I need, if you want me to :D");
+            builder.setNegativeButton("NO >(", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            builder.setPositiveButton("Ok, let's go!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(MainActivity.this, presentation.class);
+                    startActivity(intent);
+                }
+            });
+            builder.create().show();
+
+        }
+
+        if(!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Oh no... :(");
+            builder.setMessage("I didn't get the necessary permissions from you :( Don't worry, I can show you, what I need, if you want me to :D");
+            builder.setPositiveButton("Ok, let's go!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(MainActivity.this, presentation.class);
+                    startActivity(intent);
+                }
+            });
+
+            builder.setNegativeButton("NO!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            builder.create().show();
+
+        }
+
+        //Start bluetooth
     }
 
     @Override
@@ -418,6 +484,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     }
 
+    public void connectProfileTEST(boolean online){
+        Intent intent = new Intent(this, profileActivity.class);
+        intent.putExtra("online", online);
+        intent.putExtra("id", 0);
+        startActivity(intent);
+    }
 
     public void reloadNewPersonList(newPerson[] data){
         newPersonAdapter adapter = new newPersonAdapter(this,
@@ -435,6 +507,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     }
 
+    public boolean checkPermission(String permission){
+        if (ActivityCompat.checkSelfPermission(this, permission)
+                == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+
+    }
 
     private void setList(){
 
@@ -446,6 +526,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                 data[i] = new newPerson(R.drawable.ic_launcher_background, ble.getListDevices().get(i).getName());
 
             }
+            data[ble.getListDevices().size()+1] = new newPerson(R.drawable.ic_launcher_background, "Turksat46");
             initRecyclerView(data);
 
 
