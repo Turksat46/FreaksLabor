@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "741680390706",
+    "firebase_url": "https://freakslabor-71d28.firebaseio.com",
+    "project_id": "freakslabor-71d28",
+    "storage_bucket": "freakslabor-71d28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741680390706:android:ef4e7882502e6ead03122b",
+        "android_client_info": {
+          "package_name": "com.turksat46.freakslabor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741680390706-hbudavbos85ddmtoucl471bs27iirdm3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.turksat46.freakslabor",
+            "certificate_hash": "4f1693e5496abdf99600fdbcea1967f3fc098cf5"
+          }
+        },
+        {
+          "client_id": "741680390706-td5qfgn2g1ffkg8og4nu91sptpk6ovgi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE0jSN2rHU4d0-Fwxn4Wff0rXRrcXtwvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741680390706-td5qfgn2g1ffkg8og4nu91sptpk6ovgi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
