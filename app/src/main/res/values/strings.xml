@@ -49,4 +49,6 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="ble_uuid">cf311e84-391c-4761-933d-69744f98998f</string>
 </resources>

@@ -23,6 +23,7 @@ public class presentation extends AppCompatActivity {
     private static final int BLUETOOTH_PERMISSION_CODE = 102;
     private static final int LOCATION_PERMISSION_CODE = 103;
     private static final int BLUETOOTH_ADVERTISE_PERMISSION_CODE = 104;
+    private static final int BLUETOOTH_SCAN_PERMISSION_CODE = 105;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,9 @@ public class presentation extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_presentation);
         constraintLayout = (ConstraintLayout) findViewById(R.id.background);
+        checkPermission(Manifest.permission.BLUETOOTH_SCAN, BLUETOOTH_SCAN_PERMISSION_CODE);
         checkPermission(Manifest.permission.BLUETOOTH_CONNECT, BLUETOOTH_PERMISSION_CODE);
-        checkPermission(Manifest.permission.BLUETOOTH_ADVERTISE, BLUETOOTH_ADVERTISE_PERMISSION_CODE);
+        //checkPermission(Manifest.permission.BLUETOOTH_ADVERTISE, BLUETOOTH_ADVERTISE_PERMISSION_CODE);
         checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_CODE);
     }
     @Override

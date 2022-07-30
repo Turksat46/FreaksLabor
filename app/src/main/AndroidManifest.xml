@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -28,7 +27,15 @@
             android:name=".profileActivity"
             android:exported="true"
             android:label="@string/title_activity_profile"
-            android:theme="@style/Theme.FreaksLabor.NoActionBar" />
+            android:theme="@style/Theme.FreaksLabor.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="freakslabor.page.link"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SettingsActivity"
             android:exported="true"

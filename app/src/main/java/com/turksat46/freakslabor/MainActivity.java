@@ -25,14 +25,21 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.le.AdvertiseCallback;
+import android.bluetooth.le.AdvertiseData;
+import android.bluetooth.le.AdvertiseSettings;
+import android.bluetooth.le.BluetoothLeAdvertiser;
+import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.util.Log;
 import android.util.Pair;
 import android.view.OrientationListener;
@@ -58,11 +65,19 @@ import com.ederdoski.simpleble.models.BluetoothLE;
 import com.ederdoski.simpleble.utils.BluetoothLEHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList;
+import com.uriio.beacons.Beacons;
+import com.uriio.beacons.model.EddystoneURL;
 
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.BeaconTransmitter;
+import org.altbeacon.beacon.Region;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.UUID;
 
 
 import Connectors.SongService;
@@ -89,10 +104,13 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     Handler handler = new Handler();
 
-
-
     BluetoothLeScannerCompat scanner = BluetoothLeScannerCompat.getScanner();
     BluetoothLEHelper ble;
+
+    BluetoothManager btManager;
+    BluetoothAdapter btAdapter;
+    BluetoothLeScanner btScanner;
+
     private BleCallback bleCallbacks(){
 
         return new BleCallback(){
@@ -199,6 +217,44 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         //Bluetooth
         ble = new BluetoothLEHelper(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && bluetoothAdapter.isMultipleAdvertisementSupported())
+        {
+            BluetoothLeAdvertiser advertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
+
+            AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
+            //Define a service UUID according to your needs
+            ParcelUuid pUuid = new ParcelUuid( UUID.fromString( getString( R.string.ble_uuid ) ) );
+            dataBuilder.addServiceData(pUuid, "D".getBytes());
+            dataBuilder.setIncludeDeviceName(true);
+
+
+            AdvertiseSettings.Builder settingsBuilder = new AdvertiseSettings.Builder();
+            settingsBuilder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER);
+            settingsBuilder.setTimeout(0);
+
+            //Use the connectable flag if you intend on opening a Gatt Server
+            //to allow remote connections to your device.
+            settingsBuilder.setConnectable(true);
+
+            AdvertiseCallback advertiseCallback=new AdvertiseCallback() {
+                @Override
+                public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+                    super.onStartSuccess(settingsInEffect);
+                    Log.i("Advertiser", "onStartSuccess: ");
+                }
+
+                @Override
+                public void onStartFailure(int errorCode) {
+                    super.onStartFailure(errorCode);
+                    Log.e("Advertiser", "onStartFailure: "+errorCode );
+                }
+            };
+            advertiser.startAdvertising(settingsBuilder.build(),dataBuilder.build(),advertiseCallback);
+        }
+
+        Beacons.initialize(this);
+        new EddystoneURL("google.com").start();
 
         activateButton = (Button) findViewById(R.id.activatebutton);
         activateButton.setOnClickListener(new View.OnClickListener() {
@@ -313,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             }
         });
 
-        //Check permissions
+        /*Check permissions
         if(!checkPermission(Manifest.permission.BLUETOOTH_ADMIN)){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Oh no... :(");
@@ -335,10 +391,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         }
 
+         */
+
         if(!checkPermission(Manifest.permission.BLUETOOTH_SCAN)){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Oh no... :(");
-            builder.setMessage("I didn't get the necessary permissions from you :( Don't worry, I can show you, what I need, if you want me to :D");
+            builder.setMessage("I didn't get the bluetooth permissions from you :( Don't worry, I can show you, what I need, if you want me to :D");
             builder.setNegativeButton("NO >(", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -359,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         if(!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Oh no... :(");
-            builder.setMessage("I didn't get the necessary permissions from you :( Don't worry, I can show you, what I need, if you want me to :D");
+            builder.setMessage("I didn't get the location permissions from you :( Don't worry, I can show you, what I need, if you want me to :D");
             builder.setPositiveButton("Ok, let's go!", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -519,14 +577,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     private void setList(){
 
         ArrayList<BluetoothLE> aBleAvailable  = new ArrayList<>();
-        newPerson data[] = new newPerson[ble.getListDevices().size()];
+        newPerson data[] = new newPerson[ble.getListDevices().size()+1];
         if(ble.getListDevices().size() > 0) {
             for (int i = 0; i < ble.getListDevices().size(); i++) {
                 aBleAvailable.add(new BluetoothLE(ble.getListDevices().get(i).getName(), ble.getListDevices().get(i).getMacAddress(), ble.getListDevices().get(i).getRssi(), ble.getListDevices().get(i).getDevice()));
                 data[i] = new newPerson(R.drawable.ic_launcher_background, ble.getListDevices().get(i).getName());
 
             }
-            data[ble.getListDevices().size()+1] = new newPerson(R.drawable.ic_launcher_background, "Turksat46");
+            data[ble.getListDevices().size()] = new newPerson(R.drawable.ic_launcher_background, "Turksat46");
             initRecyclerView(data);
 
 
@@ -554,6 +612,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
             Handler mHandler = new Handler();
             ble.scanLeDevice(true);
+
             statusBar.setVisibility(View.VISIBLE);
             mHandler.postDelayed(() -> {
                 statusBar.setVisibility(View.GONE);
@@ -562,6 +621,39 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         }
     }
+
+    //NEW WAY TO SCAN FOR PEOPLE AND USE FOR FUTURE INTENTIONS
+
+    Beacon beacon = new Beacon.Builder()
+            .setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")
+            .setId2("1")
+            .setId3("2")
+            .setManufacturer(0x0118) // Radius Networks.  Change this for other beacon layouts
+            .setTxPower(-59)
+            //.setDataFields(Arrays.asList(new Long[] {0l})) // Remove this for beacon layouts without d: fields
+            .build();
+
+    /* Change the layout below for other beacon types
+    BeaconParser beaconParser = new BeaconParser()
+            .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
+    BeaconTransmitter beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
+        beaconTransmitter.startAdvertising(beacon, new AdvertiseCallback() {
+        @Override
+        public void onStartFailure(int errorCode) {
+            Log.e("BEACON", "Advertisement start failed with code: "+errorCode);
+        }
+
+        @Override
+        public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+            Log.i("BEACON", "Advertisement start succeeded.");
+        }
+    });
+
+     */
+
+    //Beacon start advertising!
+
+
 
     @Override
     public void onClick(View view, int position) {
