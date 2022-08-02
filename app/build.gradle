@@ -59,7 +59,7 @@ dependencies {
     implementation "no.nordicsemi.android.support.v18:scanner:1.0.0"
     implementation "com.ederdoski.ble:simpleble:1.0"
     implementation 'com.uriio:beacons-android:1.5.2'
-
+    implementation 'com.android.support:palette-v7:21.0.+'
     implementation 'org.altbeacon:android-beacon-library:2+'
     implementation 'com.uriio:beacons-android:1.5.2'
     implementation 'com.neovisionaries:nv-bluetooth:1.7'

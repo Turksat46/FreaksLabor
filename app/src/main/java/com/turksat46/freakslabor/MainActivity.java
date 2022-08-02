@@ -201,7 +201,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().hide();
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         setContentView(R.layout.activity_main);
         songService = new SongService(getApplicationContext());
         cameraView = (CameraView) findViewById(R.id.camera_view);
@@ -226,7 +229,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             //Define a service UUID according to your needs
             ParcelUuid pUuid = new ParcelUuid( UUID.fromString( getString( R.string.ble_uuid ) ) );
             dataBuilder.addServiceData(pUuid, "D".getBytes());
-            dataBuilder.setIncludeDeviceName(true);
+
+            //dataBuilder.setIncludeDeviceName(true);
 
 
             AdvertiseSettings.Builder settingsBuilder = new AdvertiseSettings.Builder();
@@ -241,20 +245,35 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                 @Override
                 public void onStartSuccess(AdvertiseSettings settingsInEffect) {
                     super.onStartSuccess(settingsInEffect);
-                    Log.i("Advertiser", "onStartSuccess: ");
+                    Log.i("Advertiser", "onStartSuccess: " + settingsInEffect.toString());
                 }
 
                 @Override
                 public void onStartFailure(int errorCode) {
                     super.onStartFailure(errorCode);
-                    Log.e("Advertiser", "onStartFailure: "+errorCode );
+                    String description = "";
+                    if (errorCode == AdvertiseCallback.ADVERTISE_FAILED_FEATURE_UNSUPPORTED) {
+                        description = "ADVERTISE_FAILED_FEATURE_UNSUPPORTED";
+                    } else if (errorCode == AdvertiseCallback.ADVERTISE_FAILED_TOO_MANY_ADVERTISERS) {
+                        description = "ADVERTISE_FAILED_TOO_MANY_ADVERTISERS";
+                    } else if (errorCode == AdvertiseCallback.ADVERTISE_FAILED_ALREADY_STARTED) {
+                        description = "ADVERTISE_FAILED_ALREADY_STARTED";
+                    } else if (errorCode == AdvertiseCallback.ADVERTISE_FAILED_DATA_TOO_LARGE) {
+                        description = "ADVERTISE_FAILED_DATA_TOO_LARGE";
+                    } else if (errorCode == AdvertiseCallback.ADVERTISE_FAILED_INTERNAL_ERROR) {
+                        description = "ADVERTISE_FAILED_INTERNAL_ERROR";
+                    } else {
+                        description = "unknown";
+                    }
+                    Log.e("Advertiser", "onStartFailure: "+description );
+
                 }
             };
             advertiser.startAdvertising(settingsBuilder.build(),dataBuilder.build(),advertiseCallback);
         }
 
         Beacons.initialize(this);
-        new EddystoneURL("google.com").start();
+        //new EddystoneURL("google.com").start();
 
         activateButton = (Button) findViewById(R.id.activatebutton);
         activateButton.setOnClickListener(new View.OnClickListener() {
@@ -437,6 +456,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         }
 
         //Start bluetooth
+        scanCollars();
     }
 
     @Override
@@ -580,11 +600,13 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         newPerson data[] = new newPerson[ble.getListDevices().size()+1];
         if(ble.getListDevices().size() > 0) {
             for (int i = 0; i < ble.getListDevices().size(); i++) {
-                aBleAvailable.add(new BluetoothLE(ble.getListDevices().get(i).getName(), ble.getListDevices().get(i).getMacAddress(), ble.getListDevices().get(i).getRssi(), ble.getListDevices().get(i).getDevice()));
-                data[i] = new newPerson(R.drawable.ic_launcher_background, ble.getListDevices().get(i).getName());
+                if(ble.getListDevices().get(i).getName() != null) {
+                    aBleAvailable.add(new BluetoothLE(ble.getListDevices().get(i).getName(), ble.getListDevices().get(i).getMacAddress(), ble.getListDevices().get(i).getRssi(), ble.getListDevices().get(i).getDevice()));
+                    data[i] = new newPerson(R.drawable.logo, ble.getListDevices().get(i).getName());
+                }
 
             }
-            data[ble.getListDevices().size()] = new newPerson(R.drawable.ic_launcher_background, "Turksat46");
+            data[ble.getListDevices().size()] = new newPerson(R.drawable.logo, "Turksat46");
             initRecyclerView(data);
 
 
@@ -606,6 +628,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
 
     private void scanCollars(){
+
 
         if(!ble.isScanning()) {
 

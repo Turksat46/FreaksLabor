@@ -1,6 +1,7 @@
 package com.turksat46.freakslabor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         try {
             holder.image.setImageResource(data[position].icon);
         }catch (Exception e){
-            holder.image.setImageResource(R.drawable.ic_launcher_background);
+            holder.image.setImageResource(R.drawable.logo);
             Log.w("RecyclerViewAdapter", "ERROR "+e.toString());
         }
 
@@ -52,11 +53,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Log.w("RecyclerViewAdapter", "ERROR "+e.toString());
         }
 
+
+        //TODO: put extras in intent
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.w(TAG, "OnClick registered!");
                 Toast.makeText(mContext, holder.name.getText(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext ,profileActivity.class);
+                mContext.startActivity(intent);
             }
         });
 
@@ -64,6 +69,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, holder.name.getText(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext ,profileActivity.class);
+                mContext.startActivity(intent);
+
             }
         });
     }

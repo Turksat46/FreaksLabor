@@ -2,6 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#2E2E2E">
 
+    <PreferenceCategory app:title="Simple things">
+
+    </PreferenceCategory>
     <Preference
         app:fragment="com.turksat46.freakslabor.SettingsActivity$MessagesFragment"
         app:icon="@drawable/messages"
@@ -19,5 +22,16 @@
         app:icon="@drawable/ic_baseline_adb_24"
         app:key="debug_header"
         app:title="Debug"/>
+    <PreferenceCategory android:title="Infos">
+
+        <Preference
+            android:id="@+id/information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fragment="com.turksat46.freakslabor.SettingsActivity$DebugFragment"
+            app:icon="@drawable/ic_baseline_info_24"
+            app:key="debug_header"
+            app:title="About this app" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

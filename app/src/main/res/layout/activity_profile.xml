@@ -2,22 +2,38 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E2E2E"
+    android:background="@drawable/turksatbackground"
     android:transitionName="textusernametrans"
     tools:context=".ownprofile">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:tint="@color/white"
+        android:tintMode="multiply"
+        app:backgroundTint="@color/card"
+        app:fabSize="auto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_keyboard_arrow_left_24" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/titlecardprofile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         app:cardBackgroundColor="@color/card"
         app:cardCornerRadius="5dp"
         app:cardElevation="2dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -41,7 +57,7 @@
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/logo"
         android:transitionName="profileimgtrans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
