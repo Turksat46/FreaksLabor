@@ -1,10 +1,21 @@
 package com.turksat46.freakslabor;
 
 import android.Manifest;
-import android.app.Presentation;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.transition.Fade;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,25 +28,106 @@ public class presentation extends AppCompatActivity {
 
     private ConstraintLayout constraintLayout;
     private AnimationDrawable animationDrawable;
+    Button continueButton;
+    Button abortButton;
+
+    ImageView logoViewImage;
+    ImageView bigLogoView;
+
+    TextView descriptionText;
+    TextView permissionText;
+
+
 
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
     private static final int BLUETOOTH_PERMISSION_CODE = 102;
     private static final int LOCATION_PERMISSION_CODE = 103;
     private static final int BLUETOOTH_ADVERTISE_PERMISSION_CODE = 104;
-    private static final int BLUETOOTH_SCAN_PERMISSION_CODE = 105;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // inside your activity (if you did not enable transitions in your theme)
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+
+        // set an exit transition
+        getWindow().setExitTransition(new Fade());
         getSupportActionBar().hide();
         setContentView(R.layout.activity_presentation);
+        continueButton = (Button)findViewById(R.id.agreeButton);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("permission", "permission denied to SEND_SMS - requesting it");
+                String[] permissions = null;
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    permissions = new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+
+                }else{
+                    permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+                }
+                requestPermissions(permissions, 100);
+                //checkPermissions();
+
+            }
+        });
+        abortButton = (Button)findViewById(R.id.abortButton);
+        abortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         constraintLayout = (ConstraintLayout) findViewById(R.id.background);
-        checkPermission(Manifest.permission.BLUETOOTH_SCAN, BLUETOOTH_SCAN_PERMISSION_CODE);
-        checkPermission(Manifest.permission.BLUETOOTH_CONNECT, BLUETOOTH_PERMISSION_CODE);
-        //checkPermission(Manifest.permission.BLUETOOTH_ADVERTISE, BLUETOOTH_ADVERTISE_PERMISSION_CODE);
-        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_CODE);
+
+        logoViewImage = (ImageView) findViewById(R.id.logoImageView);
+        bigLogoView = (ImageView) findViewById(R.id.imageView4);
+        descriptionText = (TextView) findViewById(R.id.descriptionView);
+        permissionText = (TextView) findViewById(R.id.permissionTextView);
+
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(()->{
+            bigLogoView.setVisibility(View.GONE);
+            logoViewImage.setVisibility(View.VISIBLE);
+            //Play Startup sound
+            MediaPlayer mp = MediaPlayer.create(presentation.this, R.raw.startup);
+            mp.setLooping(false);
+            mp.start();
+
+            if(ContextCompat.checkSelfPermission(presentation.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED ||
+                    ContextCompat.checkSelfPermission(presentation.this, Manifest.permission.BLUETOOTH_ADVERTISE) == PackageManager.PERMISSION_DENIED||
+                    ContextCompat.checkSelfPermission(presentation.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED||
+                    ContextCompat.checkSelfPermission(presentation.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED||
+                    ContextCompat.checkSelfPermission(presentation.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                descriptionText.setVisibility(View.VISIBLE);
+                permissionText.setVisibility(View.VISIBLE);
+                abortButton.setVisibility(View.VISIBLE);
+                continueButton.setVisibility(View.VISIBLE);
+
+
+            }else{
+                mHandler.postDelayed(()->{
+                    Intent intent = new Intent(presentation.this, MainActivity.class);
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                    finish();
+                }, 2000);
+            }
+
+        }, 5000);
+
     }
+
+    private void checkPermissions() {
+
+        checkPermission(Manifest.permission.BLUETOOTH_CONNECT, BLUETOOTH_PERMISSION_CODE);
+        checkPermission(Manifest.permission.BLUETOOTH_ADVERTISE, BLUETOOTH_ADVERTISE_PERMISSION_CODE);
+        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_CODE);
+        checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -74,9 +166,12 @@ public class presentation extends AppCompatActivity {
 
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(presentation.this, "Camera Permission Granted", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(presentation.this, "Permissions granted!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(presentation.this, MainActivity.class);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                finish();
             } else {
-                Toast.makeText(presentation.this, "Camera Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(presentation.this, "Permissions missing...", Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0
@@ -108,4 +203,6 @@ public class presentation extends AppCompatActivity {
             }
         }
     }
+
+
 }

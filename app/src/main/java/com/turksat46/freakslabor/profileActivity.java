@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,12 +27,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
@@ -43,8 +47,11 @@ public class profileActivity extends AppCompatActivity {
     boolean online = false;
     int id = 0;
 
+
     FloatingActionButton backButton;
     CircleImageView profileimg;
+    TextView nameHolder;
+    TextView bioHolder;
     int gradientColor = 0;
 
 
@@ -69,8 +76,15 @@ public class profileActivity extends AppCompatActivity {
 
         profileimg = (CircleImageView)findViewById(R.id.profileuserimg);
 
+        nameHolder=(TextView)findViewById(R.id.profileusernameText);
+        bioHolder = (TextView)findViewById(R.id.bioText);
 
         Bundle b = getIntent().getExtras();
+        nameHolder.setText(b.getString("name"));
+        bioHolder.setText(b.getString("bio"));
+
+        initRecyclerView();
+
         //online = b.getBoolean("online");
         //id = b.getInt("id");
 
@@ -104,17 +118,17 @@ public class profileActivity extends AppCompatActivity {
 
 
 
-        mHandler.postDelayed(() -> {
-            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                    R.drawable.logo);
-            Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-                public void onGenerated(Palette palette) {
-                    // Do something with colors...
-                    gradientColor = palette.getDominantColor(Color.BLUE);
-                    FillCustomGradient(findViewById(R.id.background));
-                }
-            });
-        },1000);
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                R.drawable.logo);
+        Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                // Do something with colors...
+                gradientColor = palette.getDominantColor(Color.BLUE);
+                FillCustomGradient(findViewById(R.id.background));
+            }
+        });
+
     }
     public void FillCustomGradient(View v) {
         final View view = v;
@@ -145,5 +159,14 @@ public class profileActivity extends AppCompatActivity {
 
         LayerDrawable composite = new LayerDrawable(layers);
         view.setBackgroundDrawable(composite);
+    }
+
+    public void initRecyclerView(){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recyclerView = findViewById(R.id.batcheslist);
+        recyclerView.setLayoutManager(layoutManager);
+        BadgesViewAdapter adapter = new BadgesViewAdapter(this);
+        recyclerView.setAdapter(adapter);
+
     }
 }

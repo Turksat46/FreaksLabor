@@ -16,8 +16,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:clickable="true"
-        android:tint="@color/white"
-        android:tintMode="multiply"
+        app:tint="#FFFFFF"
         app:backgroundTint="@color/card"
         app:fabSize="auto"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +75,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileuserimg" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/batcheslist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/bioCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileusernameText" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/bioCard"
         android:layout_width="match_parent"
@@ -87,7 +98,7 @@
         app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileusernameText">
+        app:layout_constraintTop_toBottomOf="@id/batcheslist">
 
         <TextView
             android:id="@+id/bioTitleText"
@@ -102,7 +113,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/bioText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

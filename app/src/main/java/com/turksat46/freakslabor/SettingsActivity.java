@@ -106,4 +106,12 @@ public class SettingsActivity extends AppCompatActivity implements
             setPreferencesFromResource(R.xml.debug_fragment, rootKey);
         }
     }
+
+    public static class AboutFragment extends PreferenceFragmentCompat{
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.about_preferences, rootKey);
+        }
+    }
 }

@@ -12,6 +12,11 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -24,9 +29,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ItemClickListener clickListener;
 
+    ViewHolder viewholder;
+
+    //Firebase
+    FirebaseFirestoreSettings fbsettings = new FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true)
+            .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+            .build();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public RecyclerViewAdapter(Context context, newPerson[] data) {
         this.data = data;
         mContext = context;
+        db.setFirestoreSettings(fbsettings);
+
     }
 
     @Override
@@ -38,6 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
+        viewholder = holder;
 
         try {
             holder.image.setImageResource(data[position].icon);
@@ -55,25 +72,46 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
         //TODO: put extras in intent
+
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.w(TAG, "OnClick registered!");
-                Toast.makeText(mContext, holder.name.getText(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext ,profileActivity.class);
-                mContext.startActivity(intent);
+                //Toast.makeText(mContext, holder.name.getText(), Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(mContext ,profileActivity.class);
+                //intent.putExtra("name", holder.name.getText());
+                //mContext.startActivity(intent);
+                onClickOnProfile();
             }
         });
+
+
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, holder.name.getText(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext ,profileActivity.class);
-                mContext.startActivity(intent);
-
+                //Toast.makeText(mContext, holder.name.getText(), Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(mContext ,profileActivity.class);
+                //intent.putExtra("name", holder.name.getText());
+                //mContext.startActivity(intent);
+                onClickOnProfile();
             }
         });
+    }
+
+    public void onClickOnProfile(){
+        Intent intent = new Intent(mContext, profileActivity.class);
+        intent.putExtra("name", viewholder.name.getText());
+        Log.v("Nearby Service", "Got UID: "+data[0].uid);
+        db.collection("users").document(data[0].uid)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        intent.putExtra("bio", (String) documentSnapshot.get("bio"));
+                    }
+                });
+        mContext.startActivity(intent);
     }
 
     @Override

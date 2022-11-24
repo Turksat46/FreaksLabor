@@ -1,0 +1,122 @@
+public void startAdvertisment(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && bluetoothAdapter.isMultipleAdvertisementSupported()) {
+
+            BluetoothLeAdvertiser advertiser = BluetoothAdapter.getDefaultAdapter().getBluetoothLeAdvertiser();
+            AdvertiseSettings settings = new AdvertiseSettings.Builder()
+                    .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
+                    .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH)
+                    .setConnectable(false)
+                    .build();
+
+            ParcelUuid pUuid = new ParcelUuid(UUID.fromString(getString(R.string.ble_uuid)));
+
+            AdvertiseData data = new AdvertiseData.Builder()
+                    .setIncludeDeviceName(true)
+                    //.addServiceData(pUuid, idToken.getBytes(StandardCharsets.UTF_8))
+                    .build();
+
+            AdvertiseCallback advertisingCallback = new AdvertiseCallback() {
+                @Override
+                public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+                    super.onStartSuccess(settingsInEffect);
+                }
+
+                @Override
+                public void onStartFailure(int errorCode) {
+                    Log.e("Advertise", "Advertising ERROR " + errorCode);
+                    super.onStartFailure(errorCode);
+                }
+            };
+
+            advertiser.startAdvertising(settings, data, advertisingCallback);
+            Toast.makeText(getApplicationContext(), "Starting advertising to other people now!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private BleCallback bleCallbacks(){
+
+            return new BleCallback(){
+
+                @Override
+                public void onBleConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+                    super.onBleConnectionStateChange(gatt, status, newState);
+
+                    if (newState == BluetoothProfile.STATE_CONNECTED) {
+                        runOnUiThread(() -> Toast.makeText(MainActivity.this, "Connected to GATT server.", Toast.LENGTH_SHORT).show());
+                    }
+
+                    if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                        runOnUiThread(() -> Toast.makeText(MainActivity.this, "Disconnected from GATT server.", Toast.LENGTH_SHORT).show());
+                    }
+                }
+
+                @Override
+                public void onBleServiceDiscovered(BluetoothGatt gatt, int status) {
+                    super.onBleServiceDiscovered(gatt, status);
+                    if (status != BluetoothGatt.GATT_SUCCESS) {
+                        Log.e("Ble ServiceDiscovered","onServicesDiscovered received: " + status);
+                    }
+                }
+
+                @Override
+                public void onBleCharacteristicChange(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+                    super.onBleCharacteristicChange(gatt, characteristic);
+                    Log.i("BluetoothLEHelper","onCharacteristicChanged Value: " + Arrays.toString(characteristic.getValue()));
+                }
+
+                @Override
+                public void onBleRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+                    super.onBleRead(gatt, characteristic, status);
+
+                    if (status == BluetoothGatt.GATT_SUCCESS) {
+                        Log.i("TAG", Arrays.toString(characteristic.getValue()));
+                        runOnUiThread(() -> Toast.makeText(MainActivity.this, "onCharacteristicRead : "+Arrays.toString(characteristic.getValue()), Toast.LENGTH_SHORT).show());
+                    }
+                }
+
+                @Override
+                public void onBleWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+                    super.onBleWrite(gatt, characteristic, status);
+                    runOnUiThread(() -> Toast.makeText(MainActivity.this, "onCharacteristicWrite Status : " + status, Toast.LENGTH_SHORT).show());
+                }
+            };
+        }
+
+        public void initializeBT() {
+
+                if(bluetoothAdapter ==null||!bluetoothAdapter.isEnabled()) {
+                    Intent enableBt = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableBt, 1);
+                }
+
+            }
+
+            public void connectProfileTEST(boolean online){
+                Intent intent = new Intent(this, profileActivity.class);
+                intent.putExtra("online", online);
+                intent.putExtra("id", 0);
+                startActivity(intent);
+            }
+
+            public void reloadNewPersonList(newPerson[] data){
+
+
+            }
+
+
+private void scanCollars(){
+
+
+        if(!ble.isScanning()) {
+
+
+            Handler mHandler = new Handler();
+            ble.scanLeDevice(true);
+            showStatusBar("Searching for people", ble.getScanPeriod());
+            mHandler.postDelayed(() -> {
+
+                setList();
+            },ble.getScanPeriod());
+
+        }
+    }

@@ -3,22 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.17239583333333333" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/adb-48px.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/color1.xml" value="0.2578125" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/color2.xml" value="0.2578125" />
-        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/mainbackground.xml" value="0.2578125" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/messages.xml" value="0.17239583333333333" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/new_person_item.xml" value="0.13645833333333332" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/presentationcolor.xml" value="0.2578125" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/sync.xml" value="0.17239583333333333" />
-        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/drawable/turksatbackground.xml" value="0.2578125" />
-        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_main.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_main.xml" value="0.1967930029154519" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_ownprofile.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_presentation.xml" value="0.6666666666666666" />
-        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_profile.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_profile.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_setupfreakslab.xml" value="0.30117753623188404" />
-        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_splash_screen.xml" value="0.1272644927536232" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/activity_spotify_login.xml" value="0.1884498480243161" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/content_profile.xml" value="0.17074275362318841" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/fragment_debug.xml" value="0.22" />
@@ -27,11 +23,24 @@
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/newpersonitem.xml" value="0.22" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/settings_activity.xml" value="0.1" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/layout/setup_activity.xml" value="0.11752786220871327" />
-        <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round1.xml" value="0.17239583333333333" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/xml/debug_fragment.xml" value="0.1" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/xml/header_preferences.xml" value="0.22" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/xml/messages_preferences.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/KeremOkumus/AndroidStudioProjects/FreaksLabor/app/src/main/res/xml/sync_preferences.xml" value="0.1111111111111111" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/drawable/mainbackground.xml" value="0.1375" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/layout/activity_presentation.xml" value="0.1" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/layout/activity_profile.xml" value="0.18115942028985507" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/layout/batchlayout.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/layout/new_person_item.xml" value="0.1" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/layout/newitem.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/layout/settings_activity.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1375" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/xml/about_preferences.xml" value="0.1" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/xml/header_preferences.xml" value="0.22" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/xml/messages_preferences.xml" value="0.22" />
+        <entry key="..\:/Users/KeremOkumus/Desktop/FreaksLabor V2/app/src/main/res/xml/sync_preferences.xml" value="0.1" />
       </map>
     </option>
   </component>

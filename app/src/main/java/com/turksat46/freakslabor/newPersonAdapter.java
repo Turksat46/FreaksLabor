@@ -47,6 +47,7 @@ public class newPersonAdapter extends ArrayAdapter<newPerson> {
         newPerson person = data[position];
         holder.txtTitle.setText(person.name);
         holder.imgIcon.setImageResource(person.icon);
+        holder.uid=data[position].uid;
 
         return row;
     }
@@ -55,5 +56,6 @@ public class newPersonAdapter extends ArrayAdapter<newPerson> {
     {
         ImageView imgIcon;
         TextView txtTitle;
+        String uid;
     }
 }
