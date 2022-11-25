@@ -6,8 +6,10 @@ that have the same interests as you.
 
 ```markdown
 # How it works
-FreaksLabor searches for other devices with Google Nearby API, which uses Bluetooth and Wifi
-and talks to them with a always random name and encrypted messages, so spoofing or decrypting is impossible!
+FreaksLabor searches for other devices with Google Nearby API, 
+which uses Bluetooth and Wifi
+and talks to them with a always random name and encrypted messages, 
+so spoofing or decrypting is impossible!
 ```
 
 
