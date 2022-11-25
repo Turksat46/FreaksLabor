@@ -15,7 +15,8 @@ so spoofing or decrypting is impossible!
 
 
 ## Join the official Google Groups to join the beta!
-You want to see, which features are currently in development? Join the Group and see for yourself!
+You want to see, which features are currently in development? 
+Join the Group and see for yourself!
 https://groups.google.com/g/freakslabor-android
 
 
