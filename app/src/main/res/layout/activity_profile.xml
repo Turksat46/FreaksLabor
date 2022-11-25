@@ -82,10 +82,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/bioCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileusernameText" />
+        app:layout_constraintTop_toBottomOf="@+id/profileusernameText"
+        tools:visibility="gone" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/bioCard"

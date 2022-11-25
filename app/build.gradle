@@ -10,9 +10,9 @@ android {
         applicationId "com.turksat46.freakslabor"
         minSdk 24
         targetSdk 31
-        versionCode 15
+        versionCode 17
 
-        versionName "1.3"
+        versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

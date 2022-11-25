@@ -475,6 +475,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         signin();
         lookfordata();
         //Start bluetooth
+
+    }
+
+    public void startMain(){
         Handler mHandler = new Handler();
         mHandler.postDelayed(()->{
             logoImageView.setVisibility(View.GONE);
@@ -949,6 +953,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             // you can store user data to SharedPreference
             AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
             firebaseAuthWithGoogle(credential);
+            startMain();
+            //
         }else{
             // Google Sign In failed, update UI appropriately
             Log.e(TAG, "Login Unsuccessful. "+result);
@@ -1079,7 +1085,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         //newPerson data[] = new newPerson[ble.getListDevices().size()+1];
         newPerson data[] = new newPerson[1];
 
-        data[0] = new newPerson(R.drawable.logo, "Test", account.getIdToken());
+        data[0] = new newPerson(R.drawable.logo, "Test", "account.getIdToken()");
         initRecyclerView(data);
         if(mDiscoveredEndpoints.size() >0){
             for(int i = 0; i < mDiscoveredEndpoints.size(); i++){

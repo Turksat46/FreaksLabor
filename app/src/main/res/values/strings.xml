@@ -8,7 +8,7 @@
     to meet new friends and more. It works with Bluetooth LE, which scans the surroundings anonymously
     and notifys you, if it finds marked friends of you or new people, that have the same interests
     as you. So, if you want to enter a new adventure, let\'s start it!</string>
-    <string name="askforpermission">Please accept and allow some necessary permissions and let\'s start immediately! This app works
+    <string name="askforpermission">Please accept the <a href="https://github.com/Turksat46/FreaksLabor/blob/master/eula.md">EULA</a> and allow some necessary permissions and let\'s start immediately! This app works
     with the internet and does send data to a server! We save data to Firebase, a cloud-solution provided by Google, such as profile details, friends, time spend with
     them and more. But, if you don\'t trust the app, you can have a look at the Github page! A more precise list of data, that is collected and saved online can be found on the
     official Github!</string>

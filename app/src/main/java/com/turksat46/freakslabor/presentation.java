@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -85,6 +86,14 @@ public class presentation extends AppCompatActivity {
         bigLogoView = (ImageView) findViewById(R.id.imageView4);
         descriptionText = (TextView) findViewById(R.id.descriptionView);
         permissionText = (TextView) findViewById(R.id.permissionTextView);
+
+        permissionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Turksat46/FreaksLabor/blob/master/eula.md"));
+                startActivity(openLink);
+            }
+        });
 
         Handler mHandler = new Handler();
         mHandler.postDelayed(()->{
