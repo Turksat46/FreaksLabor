@@ -110,6 +110,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.mlkit.vision.face.FaceDetectorOptions;
 
 
 import java.nio.charset.Charset;
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     ImageView logoImageView;
 
     ConstraintLayout mainView;
+    ConstraintLayout controlView;
 
     //Debug
     LinearLayout debugView;
@@ -210,6 +212,18 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
             .build();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+    //ML Kit face recognition
+    // High-accuracy landmark detection and face classification
+    FaceDetectorOptions highAccuracyOpts =
+            new FaceDetectorOptions.Builder()
+                    .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+                    .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
+                    .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+                    .enableTracking()
+                    .build();
+
 
 
     //Nearby variables
@@ -274,6 +288,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         buyCoffeeCard = (CardView)findViewById(R.id.buycoffeecard);
         cameraViewText = (TextView)findViewById(R.id.cameraViewText);
 
+        controlView = (ConstraintLayout)findViewById(R.id.controlLayout);
+
         changeLayout = (CardView)findViewById(R.id.changeViewButton);
         changeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -314,11 +330,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         titlecard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cameraView.openAsync(CameraView.findCameraId(
-                        Camera.CameraInfo.CAMERA_FACING_BACK));
+                //cameraView.openAsync(CameraView.findCameraId(
+                //        Camera.CameraInfo.CAMERA_FACING_BACK));
                 //mainlayout.setVisibility(View.INVISIBLE);
                 //start Camera Activity
 
+                showControlCenter();
             }
         });
 
@@ -846,6 +863,20 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     //END
 
+    private void showControlCenter(){
+        if(cameraView.getVisibility() == View.VISIBLE) {
+            //Show ControlCenter
+            cameraView.setVisibility(View.GONE);
+            mainView.setVisibility(View.GONE);
+            controlView.setVisibility(View.VISIBLE);
+        }else{
+            //Hide ControlCenter
+            cameraView.setVisibility(View.VISIBLE);
+            mainView.setVisibility(View.VISIBLE);
+            controlView.setVisibility(View.GONE);
+        }
+    }
+
     private void showCameraView() {
         if(cameraViewText.getVisibility() == View.VISIBLE) {
             //profilecard.setVisibility(View.GONE);
@@ -1024,6 +1055,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         }
 
     }
+
 
     //
     // Google things
