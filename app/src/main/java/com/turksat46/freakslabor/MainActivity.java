@@ -9,6 +9,7 @@
 package com.turksat46.freakslabor;
 
 import static android.content.ContentValues.TAG;
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 
 import static com.google.firebase.crashlytics.buildtools.Buildtools.logD;
 
@@ -22,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.app.ActivityOptions;
@@ -44,6 +46,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraManager;
 import android.media.Image;
@@ -58,6 +62,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -128,8 +133,8 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import Connectors.SongService;
-import de.markusfisch.android.cameraview.widget.CameraView;
-public class MainActivity extends AppCompatActivity implements ItemClickListener {
+//import de.markusfisch.android.cameraview.widget.CameraView;
+public class MainActivity extends AppCompatActivity implements ItemClickListener, Camera.PreviewCallback {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -270,11 +275,30 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         if(getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+            setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true);
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            );
+        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, false);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        }
+        
         //checkPermissions();
         setContentView(R.layout.activity_main);
         songService = new SongService(getApplicationContext());
         cameraView = (CameraView) findViewById(R.id.camera_view);
-        cameraView.setUseOrientationListener(true);
+        //cameraView.setUseOrientationListener(true);
         coverView = (ImageView) findViewById(R.id.songCoverView);
         bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
@@ -418,7 +442,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         //getTracks();
         //
         //
-        cameraView.setOnCameraListener(new CameraView.OnCameraListener() {
+        /*cameraView.setOnCameraListener(new CameraView.OnCameraListener() {
             @Override
             public void onConfigureParameters(Camera.Parameters parameters) {
                 // set additional camera parameters here
@@ -457,6 +481,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             }
         });
 
+         */
+
         mName = generateRandomName();
 
         //Check permissions
@@ -493,6 +519,17 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         lookfordata();
         //Start bluetooth
 
+    }
+
+    private void setWindowFlag(final int bits, boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
     }
 
     public void startMain(){
@@ -937,8 +974,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     @Override
     public void onResume() {
         super.onResume();
-        cameraView.openAsync(CameraView.findCameraId(
+        /*cameraView.openAsync(CameraView.findCameraId(
                 Camera.CameraInfo.CAMERA_FACING_BACK));
+
+         */
 
 
         /*if (!btAdapter.isEnabled()) {
@@ -951,7 +990,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     @Override
     public void onPause() {
         super.onPause();
-        cameraView.close();
+        //cameraView.close();
     }
 
     public void signin(){
@@ -1169,6 +1208,23 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     public void onClick(View view, int position) {
         //Connect to device and get details
         Toast.makeText(getApplicationContext(), "Clicked on item nr." + Integer.toString(position), Toast.LENGTH_LONG);
+    }
+
+
+    //AR
+    @Override
+    public void onPreviewFrame(byte[] bytes, Camera camera) {
+        cameraView.setOneShotPreviewCallback(this);
+        if(camera.getParameters().getPreviewFormat() == ImageFormat.NV21){
+            //Do the checks
+            int height = camera.getParameters().getPreviewSize().height;
+            int width = camera.getParameters().getPreviewSize().width;
+
+            checkIfScreenIsBlack(new NV21Image(bytes, width, height));
+        }
+    }
+
+    private void checkIfScreenIsBlack(NV21Image nv21Image) {
     }
 
     //Endpoint class

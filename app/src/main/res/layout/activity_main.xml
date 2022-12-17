@@ -8,25 +8,28 @@
     android:background="@drawable/mainbackground"
     tools:context=".MainActivity">
 
-  <de.markusfisch.android.cameraview.widget.CameraView
+  <view
       android:id="@+id/camera_view"
+      class="com.turksat46.freakslabor.CameraView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:animateLayoutChanges="true"
-      android:background="#000000"
       android:visibility="gone"
-      tools:visibility="gone">
-
-  </de.markusfisch.android.cameraview.widget.CameraView>
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="gone" />
 
   <FrameLayout
       android:id="@+id/frameLayout"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="20dp"
       android:alpha="1"
       android:animateLayoutChanges="true"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/camera_view"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
 
