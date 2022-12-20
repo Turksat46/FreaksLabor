@@ -46,8 +46,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraManager;
 import android.media.Image;
@@ -162,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     TextView cameraViewText;
     ImageView logoImageView;
+
+    ImageView camerashutter;
 
     ConstraintLayout mainView;
     ConstraintLayout controlView;
@@ -307,6 +316,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         statusTextView = (TextView)findViewById(R.id.statusTextView);
         mainView = (ConstraintLayout)findViewById(R.id.mainLayout);
 
+        camerashutter = (ImageView) findViewById(R.id.imageView5);
+
         peopleNearCard = (CardView)findViewById(R.id.peoplenearCard);
         friendsCard = (CardView)findViewById(R.id.friendsCard);
         buyCoffeeCard = (CardView)findViewById(R.id.buycoffeecard);
@@ -425,6 +436,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         });
 
         newPersonList = (ListView)findViewById(R.id.listView1);
+
+
 
         /*For testing purposes!!
         newPerson data[] = new newPerson[]
@@ -903,12 +916,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     private void showControlCenter(){
         if(cameraView.getVisibility() == View.VISIBLE) {
             //Show ControlCenter
-            cameraView.setVisibility(View.GONE);
+            //cameraView.setVisibility(View.GONE);
             mainView.setVisibility(View.GONE);
             controlView.setVisibility(View.VISIBLE);
         }else{
             //Hide ControlCenter
-            cameraView.setVisibility(View.VISIBLE);
+            //cameraView.setVisibility(View.VISIBLE);
             mainView.setVisibility(View.VISIBLE);
             controlView.setVisibility(View.GONE);
         }
@@ -917,6 +930,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     private void showCameraView() {
         if(cameraViewText.getVisibility() == View.VISIBLE) {
             //profilecard.setVisibility(View.GONE);
+            //cameraView.setVisibility(View.VISIBLE);
+            camerashutter.setVisibility(View.GONE);
             personalnameText.setVisibility(View.GONE);
             peopleNearCard.setVisibility(View.GONE);
             friendsCard.setVisibility(View.GONE);
@@ -925,6 +940,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             debugView.setVisibility(View.VISIBLE);
         }else if(cameraViewText.getVisibility() == View.GONE){
             //profilecard.setVisibility(View.VISIBLE);
+            //cameraView.setVisibility(View.INVISIBLE);
+            camerashutter.setVisibility(View.VISIBLE);
             personalnameText.setVisibility(View.VISIBLE);
             peopleNearCard.setVisibility(View.VISIBLE);
             friendsCard.setVisibility(View.VISIBLE);
@@ -937,6 +954,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     private void showCameraView(boolean state) {
         if(cameraViewText.getVisibility() == View.VISIBLE || state == true) {
             //profilecard.setVisibility(View.GONE);
+            camerashutter.setVisibility(View.GONE);
+            cameraView.setVisibility(View.VISIBLE);
             personalnameText.setVisibility(View.GONE);
             peopleNearCard.setVisibility(View.GONE);
             friendsCard.setVisibility(View.GONE);
@@ -945,6 +964,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             debugView.setVisibility(View.VISIBLE);
         }else if(cameraViewText.getVisibility() == View.GONE || state == false){
             //profilecard.setVisibility(View.VISIBLE);
+            camerashutter.setVisibility(View.VISIBLE);
+            cameraView.setVisibility(View.INVISIBLE);
             personalnameText.setVisibility(View.VISIBLE);
             peopleNearCard.setVisibility(View.VISIBLE);
             friendsCard.setVisibility(View.VISIBLE);

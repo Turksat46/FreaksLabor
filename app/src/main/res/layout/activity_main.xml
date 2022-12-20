@@ -18,7 +18,17 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:visibility="gone" />
+      tools:visibility="visible" />
+
+  <ImageView
+      android:id="@+id/imageView5"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:foreground="@drawable/bottomtransblack"
+      app:layout_constraintEnd_toStartOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/bottomtransparency" />
 
   <FrameLayout
       android:id="@+id/frameLayout"
@@ -140,7 +150,9 @@
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"
         android:animateLayoutChanges="true"
-        android:background="#00000000">
+        android:background="#00000000"
+        android:scrollbars="vertical"
+        android:verticalScrollbarPosition="defaultPosition">
 
       <androidx.cardview.widget.CardView
           android:id="@+id/statuscard"
@@ -469,6 +481,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"
         android:animateLayoutChanges="true"
+        android:background="@drawable/mainbackground"
         android:visibility="gone"
         tools:visibility="gone">
 

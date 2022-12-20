@@ -21,6 +21,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="turksat46">Turksat46</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

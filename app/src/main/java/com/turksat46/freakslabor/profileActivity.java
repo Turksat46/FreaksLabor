@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.PaintDrawable;
@@ -29,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.navigation.NavController;
@@ -51,7 +53,7 @@ public class profileActivity extends AppCompatActivity {
 
 
     FloatingActionButton backButton;
-    CircleImageView profileimg;
+    ImageView profileimg;
     TextView nameHolder;
     TextView bioHolder;
     int gradientColor = 0;
@@ -99,7 +101,7 @@ public class profileActivity extends AppCompatActivity {
             }
         });
 
-        profileimg = (CircleImageView)findViewById(R.id.profileuserimg);
+        profileimg = (ImageView)findViewById(R.id.imageView3);
 
         nameHolder=(TextView)findViewById(R.id.profileusernameText);
         bioHolder = (TextView)findViewById(R.id.bioText);
@@ -144,8 +146,8 @@ public class profileActivity extends AppCompatActivity {
 
 
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                R.drawable.logo);
+        Bitmap bitmap = ((BitmapDrawable)profileimg.getDrawable()).getBitmap ();
+
         Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
             public void onGenerated(Palette palette) {
                 // Do something with colors...
@@ -182,7 +184,7 @@ public class profileActivity extends AppCompatActivity {
                                 gradientColor, // please input your color from resource for color-4
                                 Color.parseColor("#2E2E2E"),
                                 },
-                        new float[] { 0.09f, 0.5f },
+                        new float[] { 0.09f, 1.5f },
                         Shader.TileMode.CLAMP);
                 return lg;
             }

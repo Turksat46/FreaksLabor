@@ -5,7 +5,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/turksatbackground"
+    android:background="@drawable/profilebackground"
     android:transitionName="textusernametrans"
     tools:context=".ownprofile">
 
@@ -22,6 +22,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_keyboard_arrow_left_24"
         app:tint="#FFFFFF" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="410dp"
+        android:layout_height="407dp"
+        android:layout_marginTop="120dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/titlecardprofile"
@@ -58,16 +68,18 @@
         android:layout_marginTop="50dp"
         android:src="@drawable/logo"
         android:transitionName="profileimgtrans"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlecardprofile" />
+        app:layout_constraintTop_toBottomOf="@+id/titlecardprofile"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/profileusernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Turksat46"
+        android:layout_marginTop="440dp"
+        android:text="@string/turksat46"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
