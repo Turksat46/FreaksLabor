@@ -402,6 +402,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         personalimg = (ImageView)findViewById(R.id.personalimg);
         personalnameText=(TextView)findViewById(R.id.personalnameText);
+        personalnameText.setSelected(true);
 
         profilecard = (CardView)findViewById(R.id.profilecard);
         profilecard.setOnClickListener(new View.OnClickListener() {
@@ -505,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 // Get signedIn user
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
+                personalnameText.setText(user.getDisplayName());
                 //if user is signed in, we call a helper method to save the user details to Firebase
                 if (user != null) {
                     // User is signed in
@@ -975,6 +976,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         }
     }
 
+    private void reloadNearby(){
+
+    }
+
     private void lookfordata() {
         showStatusBar("Downloading data", 3000);
         db.collection("users").get()
@@ -1033,6 +1038,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             account = result.getSignInAccount();
             idToken = account.getIdToken();
             name = account.getDisplayName();
+            personalnameText.setText(name);
             email = account.getEmail();
 
             //Check, if user is in database
