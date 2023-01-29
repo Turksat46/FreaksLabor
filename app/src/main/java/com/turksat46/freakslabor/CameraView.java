@@ -49,7 +49,8 @@ public class CameraView extends SurfaceView  implements SurfaceHolder.Callback, 
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         try {
             Camera.Parameters parameters = camera.getParameters();
-            parameters.setPreviewSize(i1, i2);
+            //parameters.setPreviewSize(i1, i2);
+            parameters.setPreviewSize(1080, 1920);
             camera.setParameters(parameters);
             camera.startPreview();
         }catch (Exception e){

@@ -30,7 +30,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:clickable="true"
-                tools:src="@drawable/ic_launcher_background" />
+                tools:src="@drawable/logoforeground" />
 
             <TextView
                 android:id="@+id/usernameText"

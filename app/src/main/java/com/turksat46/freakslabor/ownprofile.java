@@ -90,6 +90,7 @@ public class ownprofile extends AppCompatActivity {
 
         // inside your activity (if you did not enable transitions in your theme)
 
+        //TODO: Change this shit
         Bundle b = getIntent().getExtras();
         if(b == null){
             id="gA5YxTw78kUM7JsqYktR8fmX2593";

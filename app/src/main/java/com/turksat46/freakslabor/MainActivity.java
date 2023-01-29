@@ -9,82 +9,52 @@
 package com.turksat46.freakslabor;
 
 import static android.content.ContentValues.TAG;
-import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 
-import static com.google.firebase.crashlytics.buildtools.Buildtools.logD;
-
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import android.Manifest;
 import android.app.ActivityOptions;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
-import android.bluetooth.le.AdvertiseCallback;
-import android.bluetooth.le.AdvertiseData;
-import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.AdvertisingSet;
-import android.bluetooth.le.AdvertisingSetCallback;
-import android.bluetooth.le.AdvertisingSetParameters;
-import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.hardware.camera2.CameraManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ParcelUuid;
 import android.transition.Fade;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.ederdoski.simpleble.interfaces.BleCallback;
 import com.ederdoski.simpleble.models.BluetoothLE;
 import com.ederdoski.simpleble.utils.BluetoothLEHelper;
-import com.ederdoski.simpleble.utils.Constants;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -97,7 +67,6 @@ import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
 import com.google.android.gms.nearby.connection.ConnectionResolution;
 import com.google.android.gms.nearby.connection.ConnectionsClient;
-import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
 import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
 import com.google.android.gms.nearby.connection.DiscoveryOptions;
 import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
@@ -109,7 +78,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.api.Endpoint;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -125,23 +93,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
 
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 
-
-import javax.annotation.Nullable;
 
 import Connectors.SongService;
 //import de.markusfisch.android.cameraview.widget.CameraView;
-public class MainActivity extends AppCompatActivity implements ItemClickListener, Camera.PreviewCallback {
+public class MainActivity extends AppCompatActivity implements ItemClickListener, Camera.PreviewCallback, SensorEventListener {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -212,6 +173,20 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     BluetoothAdapter bluetoothAdapter;
     boolean mScanning;
     Handler mHandler;
+
+    FrameLayout arlayout;
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private static final int camerawidth_azimut = 10;
+    private static final int camerawidth_polar = 15;
+
+    //CompassView
+    private CompassView compassview;
+
+    //SharedPreferences
+    //SharedPreferences usersp = getSharedPreferences("user", MODE_PRIVATE);
+    //SharedPreferences settingssp = getSharedPreferences("settings", MODE_PRIVATE);
+
 
     //DEBUGGING
     //Check if screen has ben touched or sth
@@ -284,6 +259,11 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         if(getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
+        compassview = new CompassView(this);
 
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
@@ -914,8 +894,26 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     //END
 
+    /*private void editUserSettings(String id, String value){
+        SharedPreferences.Editor editor = usersp.edit();
+        editor.putString(id, value);
+        editor.commit();
+    }
+
+     */
+
+    /*private String getUserSettings(String id){
+        if(usersp.contains(id)){
+            return usersp.getString(id, "null");
+        }
+        Log.e("getUserSettings", "Couldn't get value from id" + id);
+        return null;
+    }
+
+     */
+
     private void showControlCenter(){
-        if(cameraView.getVisibility() == View.VISIBLE) {
+        if(controlView.getVisibility() == View.GONE) {
             //Show ControlCenter
             //cameraView.setVisibility(View.GONE);
             mainView.setVisibility(View.GONE);
@@ -1010,6 +1008,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, 105);
         }*/
+
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
 
     }
 
@@ -1136,9 +1136,17 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,data);
+        PersonRecyclerViewAdapter adapter = new PersonRecyclerViewAdapter(this,data);
         recyclerView.setAdapter(adapter);
 
+    }
+
+    public void initPlaceRecyclerView(newPlace[] data){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recyclerView = findViewById(R.id.placesrecyclerview);
+        recyclerView.setLayoutManager(layoutManager);
+        PlacesRecyclerAdapter adapter = new PlacesRecyclerAdapter(this,data);
+        recyclerView.setAdapter(adapter);
     }
 
     public boolean checkPermission(String permission){
@@ -1182,9 +1190,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         ArrayList<BluetoothLE> aBleAvailable  = new ArrayList<>();
         //newPerson data[] = new newPerson[ble.getListDevices().size()+1];
         newPerson data[] = new newPerson[1];
+        newPlace dataplace[] = new newPlace[1];
 
-        data[0] = new newPerson(R.drawable.logo, "Test", "account.getIdToken()");
+        data[0] = new newPerson(R.drawable.img, "Test", "account.getIdToken()");
+        //dataplace[0] = new newPlace(R.drawable.logo, "McDonalds");
         initRecyclerView(data);
+        //initPlaceRecyclerView(dataplace);
         if(mDiscoveredEndpoints.size() >0){
             for(int i = 0; i < mDiscoveredEndpoints.size(); i++){
                 //data[i] = new newPerson(R.drawable.logo, )
@@ -1252,6 +1263,24 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
     private void checkIfScreenIsBlack(NV21Image nv21Image) {
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        //Testing
+        //Log.e("Sensor Data", Float.toString(sensorEvent.values[0]));
+        float azimutCamera = sensorEvent.values[0];
+        float polarCamera = 90 - sensorEvent.values[1];
+        //setTestPoint(azimutCamera, polarCamera);
+
+        if(compassview != null){
+            compassview.setWinkel(-sensorEvent.values[0]);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 
     //Endpoint class

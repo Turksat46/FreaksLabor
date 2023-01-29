@@ -20,6 +20,8 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="visible" />
 
+
+
   <ImageView
       android:id="@+id/imageView5"
       android:layout_width="match_parent"
@@ -41,7 +43,8 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintEnd_toStartOf="@+id/camera_view"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toplayout"
@@ -89,8 +92,8 @@
               android:contentDescription="Username"
               android:ellipsize="marquee"
               android:marqueeRepeatLimit="marquee_forever"
-              android:scrollHorizontally="true"
               android:maxWidth="80dp"
+              android:scrollHorizontally="true"
               android:singleLine="true"
               android:text="Turksat46"
               android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -159,6 +162,38 @@
         android:background="#00000000"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="defaultPosition">
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/notificationcard"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginEnd="10dp"
+          android:layout_marginBottom="10dp"
+          android:visibility="gone"
+          app:cardBackgroundColor="@color/card"
+          app:cardCornerRadius="5dp"
+          app:layout_constraintBottom_toTopOf="@id/statuscard"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          tools:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="You got a new notification!"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+      </androidx.cardview.widget.CardView>
 
       <androidx.cardview.widget.CardView
           android:id="@+id/statuscard"
@@ -280,6 +315,43 @@
       </androidx.cardview.widget.CardView>
 
       <androidx.cardview.widget.CardView
+          android:id="@+id/placesnearbycard"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:layout_marginTop="20dp"
+          android:layout_marginEnd="10dp"
+          app:cardBackgroundColor="@color/card"
+          app:cardCornerRadius="5dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/peoplenearCard">
+
+        <TextView
+            android:id="@+id/placesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/placesnearby"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/placesrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:persistentDrawingCache="all" />
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
           android:id="@+id/friendsCard"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -290,7 +362,7 @@
           app:cardCornerRadius="5dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/peoplenearCard">
+          app:layout_constraintTop_toBottomOf="@id/placesnearbycard">
 
         <TextView
             android:id="@+id/friendsText"
@@ -487,7 +559,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"
         android:animateLayoutChanges="true"
-        android:background="@drawable/mainbackground"
         android:visibility="gone"
         tools:visibility="gone">
 
