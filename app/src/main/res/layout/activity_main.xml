@@ -21,9 +21,8 @@
       tools:visibility="visible" />
 
 
-
   <ImageView
-      android:id="@+id/imageView5"
+      android:id="@+id/mainbackground"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:foreground="@drawable/bottomtransblack"
@@ -279,7 +278,7 @@
             app:iconPadding="0dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            android:id="@+id/personrecyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
@@ -321,11 +320,13 @@
           android:layout_marginStart="10dp"
           android:layout_marginTop="20dp"
           android:layout_marginEnd="10dp"
+          android:visibility="gone"
           app:cardBackgroundColor="@color/card"
           app:cardCornerRadius="5dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/peoplenearCard">
+          app:layout_constraintTop_toBottomOf="@+id/peoplenearCard"
+          tools:visibility="gone">
 
         <TextView
             android:id="@+id/placesText"
@@ -358,11 +359,13 @@
           android:layout_marginStart="10dp"
           android:layout_marginTop="30dp"
           android:layout_marginEnd="10dp"
+          android:visibility="gone"
           app:cardBackgroundColor="@color/card"
           app:cardCornerRadius="5dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/placesnearbycard">
+          app:layout_constraintTop_toBottomOf="@id/placesnearbycard"
+          tools:visibility="gone">
 
         <TextView
             android:id="@+id/friendsText"
@@ -417,11 +420,13 @@
           android:layout_marginStart="10dp"
           android:layout_marginTop="30dp"
           android:layout_marginEnd="10dp"
+          android:visibility="gone"
           app:cardBackgroundColor="@color/card"
           app:cardCornerRadius="5dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/friendsCard">
+          app:layout_constraintTop_toBottomOf="@+id/friendsCard"
+          tools:visibility="gone">
 
         <TextView
             android:id="@+id/explainingText"
@@ -549,6 +554,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:layout_gravity="bottom|left"
+            app:srcCompat="@drawable/tf_white_primary_horizontal" />
       </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

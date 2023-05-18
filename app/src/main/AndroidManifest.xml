@@ -12,8 +12,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature android:name="android.hardware.bluetooth_le" />
 
@@ -28,55 +28,80 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FreaksLabor">
-        <service
-            android:name=".MessagingService"
-            android:enabled="false"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-            <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/logoforeground"/>
-
-            <meta-data
-                android:name="com.google.firebase.messaging.default_notification_color"
-                android:resource="@color/white"/>
-        </service>
-
-
-        <meta-data
-            android:name="com.google.android.nearby.messages.API_KEY"
-            android:value="AIzaSyCE0jSN2rHU4d0-Fwxn4Wff0rXRrcXtwvU" />
-        <meta-data android:name="com.google.ar.core" android:value="optional" />
-
         <activity
-            android:name=".profileActivity"
+            android:name=".StartingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:label="@string/title_activity_profile"
-            android:theme="@style/Theme.FreaksLabor.NoActionBar"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="true"
-            android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".setup"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ownprofile"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".presentation"
-            android:exported="true"
-            android:screenOrientation="portrait">
+            android:label="FreaksLabor"
+            android:theme="@style/Theme.FreaksLabor.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".newMainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_new_main"
+            android:theme="@style/Theme.FreaksLabor.Fullscreen">
+
+        </activity>
+        <activity
+            android:name=".setupActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_setup"
+            android:theme="@style/Theme.FreaksLabor.Fullscreen" />
+
+        <service
+            android:name=".MessagingService"
+            android:enabled="false"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/logoforeground" />
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/white" />
+        </service>
+
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="AIzaSyCE0jSN2rHU4d0-Fwxn4Wff0rXRrcXtwvU" />
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional" />
+
+        <activity
+            android:name=".profileActivity"
+            android:exported="true"
+            android:label="@string/title_activity_profile"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.FreaksLabor.NoActionBar" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".setup"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ownprofile"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation"
+            android:exported="false"
+            android:screenOrientation="portrait">
+
         </activity>
         <activity
             android:name=".SpotifyLogin"
@@ -85,8 +110,8 @@
             android:name=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
-            android:supportsPictureInPicture="true"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:supportsPictureInPicture="true" />
 
         <meta-data
             android:name="preloaded_fonts"

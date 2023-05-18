@@ -17,8 +17,10 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -43,6 +45,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,6 +63,11 @@ public class profileActivity extends AppCompatActivity {
     TextView bioHolder;
     int gradientColor = 0;
 
+    String uid;
+    String name;
+    String bio;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,44 +117,9 @@ public class profileActivity extends AppCompatActivity {
         bioHolder = (TextView)findViewById(R.id.bioText);
 
         Bundle b = getIntent().getExtras();
-        nameHolder.setText(b.getString("name"));
-        bioHolder.setText(b.getString("bio"));
+        uid = String.valueOf(b.get("uid"));
 
         initRecyclerView();
-
-        //online = b.getBoolean("online");
-        //id = b.getInt("id");
-
-        FirebaseDynamicLinks.getInstance()
-                .getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        // Get deep link from result (may be null if no link is found)
-                        Uri deepLink = null;
-                        if (pendingDynamicLinkData != null) {
-                            deepLink = pendingDynamicLinkData.getLink();
-                        }
-
-
-                        // Handle the deep link. For example, open the linked content,
-                        // or apply promotional credit to the user's account.
-                        // ...
-
-                        // ...
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("DEEPLINK FAILURE", "getDynamicLink:onFailure", e);
-                    }
-                });
-
-        Handler mHandler = new Handler();
-
-
-
 
         Bitmap bitmap = ((BitmapDrawable)profileimg.getDrawable()).getBitmap ();
 
@@ -155,6 +130,21 @@ public class profileActivity extends AppCompatActivity {
                 FillCustomGradient(findViewById(R.id.background));
             }
         });
+
+        db.collection("users").document(uid).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        name = (String) documentSnapshot.get("name");
+                        bio = (String) documentSnapshot.get("bio");
+                        setText();
+                    }
+                });
+    }
+
+    private void setText() {
+        nameHolder.setText(name);
+        bioHolder.setText(bio);
     }
 
     private void setWindowFlag(final int bits, boolean on) {
@@ -182,7 +172,7 @@ public class profileActivity extends AppCompatActivity {
                         view.getHeight(),
                         new int[] {
                                 gradientColor, // please input your color from resource for color-4
-                                Color.parseColor("#2E2E2E"),
+                                Color.parseColor("#000000"),
                                 },
                         new float[] { 0.09f, 1.5f },
                         Shader.TileMode.CLAMP);

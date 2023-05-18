@@ -160,16 +160,7 @@ public class PersonRecyclerViewAdapter extends RecyclerView.Adapter<PersonRecycl
 
     public void onClickOnProfile(){
         Intent intent = new Intent(mContext, profileActivity.class);
-        intent.putExtra("name", viewholder.name.getText());
-        Log.v("Nearby Service", "Got UID: "+data[0].uid);
-        db.collection("users").document(data[0].uid)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        intent.putExtra("bio", (String) documentSnapshot.get("bio"));
-                    }
-                });
+        intent.putExtra("uid", data[0].uid);
         mContext.startActivity(intent);
     }
 

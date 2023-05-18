@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     CardView peopleNearCard;
     CardView friendsCard;
     CardView buyCoffeeCard;
+    CardView placesNearbyCard;
 
     TextView cameraViewText;
     ImageView logoImageView;
@@ -296,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         statusTextView = (TextView)findViewById(R.id.statusTextView);
         mainView = (ConstraintLayout)findViewById(R.id.mainLayout);
 
-        camerashutter = (ImageView) findViewById(R.id.imageView5);
+        camerashutter = (ImageView) findViewById(R.id.mainbackground);
 
         peopleNearCard = (CardView)findViewById(R.id.peoplenearCard);
         friendsCard = (CardView)findViewById(R.id.friendsCard);
@@ -304,6 +305,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         cameraViewText = (TextView)findViewById(R.id.cameraViewText);
 
         controlView = (ConstraintLayout)findViewById(R.id.controlLayout);
+
+        placesNearbyCard = (CardView)findViewById(R.id.placesnearbycard);
 
         changeLayout = (CardView)findViewById(R.id.changeViewButton);
         changeLayout.setOnClickListener(new View.OnClickListener() {
@@ -930,47 +933,57 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         if(cameraViewText.getVisibility() == View.VISIBLE) {
             //profilecard.setVisibility(View.GONE);
             //cameraView.setVisibility(View.VISIBLE);
-            camerashutter.setVisibility(View.GONE);
+
             personalnameText.setVisibility(View.GONE);
             peopleNearCard.setVisibility(View.GONE);
+            placesNearbyCard.setVisibility(View.GONE);
             friendsCard.setVisibility(View.GONE);
             buyCoffeeCard.setVisibility(View.GONE);
             cameraViewText.setVisibility(View.GONE);
             debugView.setVisibility(View.VISIBLE);
+            camerashutter.setVisibility(View.GONE);
+
         }else if(cameraViewText.getVisibility() == View.GONE){
             //profilecard.setVisibility(View.VISIBLE);
             //cameraView.setVisibility(View.INVISIBLE);
             camerashutter.setVisibility(View.VISIBLE);
             personalnameText.setVisibility(View.VISIBLE);
             peopleNearCard.setVisibility(View.VISIBLE);
+            placesNearbyCard.setVisibility(View.VISIBLE);
             friendsCard.setVisibility(View.VISIBLE);
             buyCoffeeCard.setVisibility(View.VISIBLE);
             cameraViewText.setVisibility(View.VISIBLE);
             debugView.setVisibility(View.GONE);
+
         }
     }
 
     private void showCameraView(boolean state) {
         if(cameraViewText.getVisibility() == View.VISIBLE || state == true) {
             //profilecard.setVisibility(View.GONE);
-            camerashutter.setVisibility(View.GONE);
-            cameraView.setVisibility(View.VISIBLE);
+
             personalnameText.setVisibility(View.GONE);
             peopleNearCard.setVisibility(View.GONE);
+            placesNearbyCard.setVisibility(View.GONE);
             friendsCard.setVisibility(View.GONE);
             buyCoffeeCard.setVisibility(View.GONE);
             cameraViewText.setVisibility(View.GONE);
             debugView.setVisibility(View.VISIBLE);
+            camerashutter.setVisibility(View.GONE);
+            cameraView.setVisibility(View.VISIBLE);
+
         }else if(cameraViewText.getVisibility() == View.GONE || state == false){
             //profilecard.setVisibility(View.VISIBLE);
-            camerashutter.setVisibility(View.VISIBLE);
-            cameraView.setVisibility(View.INVISIBLE);
+
             personalnameText.setVisibility(View.VISIBLE);
             peopleNearCard.setVisibility(View.VISIBLE);
+            placesNearbyCard.setVisibility(View.VISIBLE);
             friendsCard.setVisibility(View.VISIBLE);
             buyCoffeeCard.setVisibility(View.VISIBLE);
             cameraViewText.setVisibility(View.VISIBLE);
             debugView.setVisibility(View.GONE);
+            camerashutter.setVisibility(View.VISIBLE);
+            cameraView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -1134,7 +1147,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     public void initRecyclerView(newPerson[] data){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = findViewById(R.id.personrecyclerview);
         recyclerView.setLayoutManager(layoutManager);
         PersonRecyclerViewAdapter adapter = new PersonRecyclerViewAdapter(this,data);
         recyclerView.setAdapter(adapter);
@@ -1160,6 +1173,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     String userName;
     String userBio;
+    String userImg;
     private void addToPersonList(String useruid){
 
         db.collection("users").document(useruid)
@@ -1169,6 +1183,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         userName = (String) documentSnapshot.get("name");
                         userBio = (String) documentSnapshot.get("bio");
+                        userImg = (String) documentSnapshot.get("image");
                     }
                 });
 
@@ -1192,7 +1207,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         newPerson data[] = new newPerson[1];
         newPlace dataplace[] = new newPlace[1];
 
-        data[0] = new newPerson(R.drawable.img, "Test", "account.getIdToken()");
+        data[0] = new newPerson(R.drawable.img, "Test", account.getIdToken());
         //dataplace[0] = new newPlace(R.drawable.logo, "McDonalds");
         initRecyclerView(data);
         //initPlaceRecyclerView(dataplace);

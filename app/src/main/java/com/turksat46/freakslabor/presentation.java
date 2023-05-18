@@ -211,7 +211,7 @@ public class presentation extends AppCompatActivity {
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Toast.makeText(presentation.this, "Permissions granted!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(presentation.this, MainActivity.class);
+                Intent intent = new Intent(presentation.this, setupActivity.class);
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 finish();
             } else {

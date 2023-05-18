@@ -51,5 +51,12 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="ble_uuid">cf311e84-391c-4761-933d-69744f98998f</string>
+    <string name="title_activity_setup">setupActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_new_main">newMainActivity</string>
+    <string name="title_activity_starting">StartingActivity</string>
+
+    <string name="switchbutton">Switch View</string>
 
 </resources>

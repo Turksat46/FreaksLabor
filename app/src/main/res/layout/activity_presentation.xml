@@ -76,14 +76,14 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="144dp"
+        android:layout_height="225dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logoforeground"
-        app:tint="#FFFFFF"/>
+        app:srcCompat="@drawable/logowithoutbg"
+        app:tint="#FFFFFF" />
 
     <TextView
         android:id="@+id/madeWLoveView"
@@ -130,6 +130,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="gone" />
+
 
     <Button
         android:id="@+id/agreeButton"

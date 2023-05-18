@@ -2,22 +2,37 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backgroundownprofile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2E2E2E"
     android:transitionName="textusernametrans"
     tools:context=".ownprofile">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/backButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:clickable="true"
+        app:backgroundTint="@color/card"
+        app:fabSize="auto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_keyboard_arrow_left_24"
+        app:tint="#FFFFFF" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/titlecardprofile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="44dp"
         app:cardBackgroundColor="@color/card"
         app:cardCornerRadius="5dp"
         app:cardElevation="2dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/backButton2"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -36,22 +51,22 @@
 
     </androidx.cardview.widget.CardView>
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/profileuserimg"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/logo"
+        android:layout_width="match_parent"
+        android:layout_height="410dp"
+        android:layout_marginTop="30dp"
         android:transitionName="profileimgtrans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlecardprofile" />
+        app:layout_constraintTop_toBottomOf="@+id/titlecardprofile"
+        app:srcCompat="@drawable/img" />
 
     <TextView
         android:id="@+id/profileusernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:text="Turksat46"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
@@ -68,15 +83,17 @@
         android:layout_marginEnd="10dp"
         android:background="@color/profilecard"
         android:text="Settings"
+        android:visibility="gone"
         app:icon="@drawable/ic_baseline_settings_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
     <EditText
         android:id="@+id/editTextBio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Bio"
@@ -87,10 +104,14 @@
 
     <Button
         android:id="@+id/savebutton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextBio" />
