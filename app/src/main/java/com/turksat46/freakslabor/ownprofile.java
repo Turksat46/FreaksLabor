@@ -294,13 +294,31 @@ public class ownprofile extends AppCompatActivity {
                                 getContentResolver(),
                                 filePath);
                 profileimg.setImageBitmap(bitmap);
+
+                /*Save image to database
+                Uri uri=data.getData();
+                StorageReference filepath=storage.child("Images").child(uri.getLastPathSegment());
+                storageReference.child("Images").child(uri.getLastPathSegment());
+                filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        newStudent.child("image").setValue(downloadUrl);
+                    }
+                });
+
+                 */
             }
 
             catch (IOException e) {
                 // Log the exception
                 e.printStackTrace();
             }
+
+
+
         }
+
     }
 
     private void uploadImage()

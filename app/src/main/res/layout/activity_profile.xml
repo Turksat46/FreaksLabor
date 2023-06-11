@@ -65,23 +65,15 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="410dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:foreground="@drawable/toptransblack"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/img" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileuserimg"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:src="@drawable/logo"
-        android:transitionName="profileimgtrans"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="96dp"
-        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/profileusernameText"

@@ -78,10 +78,6 @@ public class profileActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true);
