@@ -15,11 +15,51 @@
       },
       "oauth_client": [
         {
+          "client_id": "741680390706-askpcngv26v1lf58iolgc9svaepn8ri4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.turksat46.freakslabor",
+            "certificate_hash": "8f9b706589e5e0ec3e7bbcc0016356f254a9e1e8"
+          }
+        },
+        {
+          "client_id": "741680390706-c9ru9qlgbgm3euhrkt5l1ckfn680p16t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.turksat46.freakslabor",
+            "certificate_hash": "a3379027df0e284690f0aac0fde4f0676416ac7d"
+          }
+        },
+        {
           "client_id": "741680390706-hbudavbos85ddmtoucl471bs27iirdm3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.turksat46.freakslabor",
             "certificate_hash": "4f1693e5496abdf99600fdbcea1967f3fc098cf5"
+          }
+        },
+        {
+          "client_id": "741680390706-jrrm3p1nsl39c5lsje3hgo76e6bjr4fd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.turksat46.freakslabor",
+            "certificate_hash": "eb23de1f53f56f62b80b18ec6957ed85a9601dd3"
+          }
+        },
+        {
+          "client_id": "741680390706-le9otbc8ora7cvvlvc98drkv57h0ubn2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.turksat46.freakslabor",
+            "certificate_hash": "8cb3d0dbd988f1b7fa716a8bc3913ac018e2f595"
+          }
+        },
+        {
+          "client_id": "741680390706-nour0okn9igulqdp5l4vq374hvbsr2tm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.turksat46.freakslabor",
+            "certificate_hash": "1b374a9d01a5fb072248c47804b1745423bb573a"
           }
         },
         {

@@ -63,7 +63,7 @@
         app:tint="#FFFFFF" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/largeprofpic"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -86,7 +86,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/largeprofpic" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/batcheslist"

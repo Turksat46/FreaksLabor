@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -139,11 +140,11 @@ public class setup extends AppCompatActivity {
     private void handleSignInResult(GoogleSignInResult result) {
         if(result.isSuccess()){
             account = result.getSignInAccount();
-            idToken = account.getIdToken();
+            idToken = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             name = account.getDisplayName();
             email = account.getEmail();
 
-            //save id to sp
+            //generate & save id to sp
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
             myEdit.putString("id", idToken);
             myEdit.apply();

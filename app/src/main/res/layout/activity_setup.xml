@@ -67,6 +67,21 @@
         app:layout_constraintTop_toBottomOf="@+id/titlecard"
         app:srcCompat="@drawable/img" />
 
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:maxLength="15"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileuserimg" />
+
     <TextView
         android:id="@+id/profileusernameText"
         android:layout_width="wrap_content"
@@ -76,9 +91,11 @@
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileuserimg" />
+        app:layout_constraintTop_toBottomOf="@+id/profileuserimg"
+        tools:visibility="gone" />
 
     <EditText
         android:id="@+id/editTextBio"
@@ -86,12 +103,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Bio"
         android:inputType="textPersonName"
-        android:text="Bio"
+        android:maxLength="100"
+        android:singleLine="true"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileusernameText" />
+        app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName" />
 
     <Button
         android:id="@+id/savebutton"

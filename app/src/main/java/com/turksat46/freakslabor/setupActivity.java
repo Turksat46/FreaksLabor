@@ -5,36 +5,57 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class setupActivity extends AppCompatActivity {
 
     Button savebutton;
     GoogleSignInAccount account;
     ImageView userimg;
+    EditText editname;
+    EditText editBio;
     private Uri filePath;
+
+    SharedPreferences sharedPreferences;
+
 
     String idToken;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
+
+    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true)
+            .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+            .build();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     @SuppressLint("MissingInflatedId")
@@ -46,7 +67,9 @@ public class setupActivity extends AppCompatActivity {
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
+        sharedPreferences= getSharedPreferences("user",MODE_PRIVATE);
 
+        db.setFirestoreSettings(settings);
         savebutton = (Button) findViewById(R.id.savebutton);
         savebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +78,9 @@ public class setupActivity extends AppCompatActivity {
                 saveUser();
             }
         });
+
+        editname = (EditText)findViewById(R.id.editTextTextPersonName);
+        editBio = (EditText)findViewById(R.id.editTextBio);
 
         Intent intent = getIntent();
         idToken = intent.getStringExtra("id");
@@ -97,7 +123,11 @@ public class setupActivity extends AppCompatActivity {
                 && data.getData() != null) {
 
             filePath = data.getData();
-
+            userimg.setImageURI(filePath);
+            //generate & save id to sp
+            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            myEdit.putString("image", filePath.toString());
+            myEdit.apply();
             /* Get the Uri of data
 
             try {
@@ -125,7 +155,7 @@ public class setupActivity extends AppCompatActivity {
 
                  */
 /*
-
+q
             }
 
             catch (IOException e) {
@@ -139,28 +169,33 @@ public class setupActivity extends AppCompatActivity {
 
 
     private void saveUser() {
-        StorageReference imageRef = storageRef.child(idToken + "/image.jpg"); // Set the desired path for your image
-        UploadTask uploadTask = imageRef.putFile(filePath); // If you have the file URI
-        // Or: imageRef.putFile(file); // If you have the file object directly
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        StorageReference imageRef = storageRef.child(idToken)
+                .child("profilepic"); // Set the desired path for your image
+        imageRef.putFile(Uri.parse(String.valueOf(filePath))).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // Image uploaded successfully
-                // You can get the image download URL if needed:
-                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String imageUrl = uri.toString();
-                        // Do something with the download URL
-                    }
-                });
+                Log.w("Firebase Storage", "Upload successful!");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Image upload failed
+                Log.w("Firebase Storage", "Upload failed: "+e);
             }
         });
+
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("name", editname.getText().toString());
+        user.put("bio", editBio.getText().toString());
+
+        //Save into database
+        db.collection("users").document(idToken).set(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(setupActivity.this, newMainActivity.class));
+                    }
+                });
 
     }
 

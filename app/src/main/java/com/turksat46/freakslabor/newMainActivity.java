@@ -1,39 +1,63 @@
 package com.turksat46.freakslabor;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Bitmap;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.turksat46.freakslabor.ImageUtils;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class newMainActivity extends AppCompatActivity{
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     public PreviewView previewView;
+
+    Boolean isProfileOpen = false;
+
+    CircleImageView userimage;
+
+    ConstraintLayout homeview;
+
+    //ProfileView
+    ConstraintLayout profileview;
+    ImageView largeProfilePic;
+    TextView usernametextview;
+    TextView biotextview;
+    //END ProfileView
+
+    SharedPreferences sharedPreferences;
+    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true)
+            .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+            .build();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +86,46 @@ public class newMainActivity extends AppCompatActivity{
         overridePendingTransition(R.anim.activityfadein, R.anim.activityfaedout);
         setContentView(R.layout.activity_new_main);
 
-        previewView = (PreviewView) findViewById(R.id.previewView);
+        db.setFirestoreSettings(settings);
 
+        homeview = (ConstraintLayout)findViewById(R.id.homeview);
+        profileview = (ConstraintLayout)findViewById(R.id.profileview);
+        usernametextview = (TextView)findViewById(R.id.usernametextview);
+        biotextview = (TextView)findViewById(R.id.biotextview);
+        populateuserinfo();
+        profileview.setVisibility(View.GONE);
+        largeProfilePic = (ImageView)findViewById(R.id.largeprofpic);
+        FirebaseImageLoader.loadImage(getApplicationContext(), Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID).toString(), largeProfilePic);
+        sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+
+        //Set Userimage
+        userimage = (CircleImageView)findViewById(R.id.personalimg);
+        FirebaseImageLoader.loadImage(this, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID).toString(), userimage);
+        userimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                populateuserinfo();
+                if(!isProfileOpen){
+                    homeview.setVisibility(View.GONE);
+                    profileview.setVisibility(View.VISIBLE);
+                    userimage.setImageResource(R.drawable.baseline_close_24);
+                    isProfileOpen = true;
+                }else{
+                    profileview.setVisibility(View.GONE);
+                    homeview.setVisibility(View.VISIBLE);
+                    FirebaseImageLoader.loadImage(getApplicationContext(), Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID).toString(), userimage);
+                    isProfileOpen = false;
+                }
+            }
+        });
+
+        //Camera
+        previewView = (PreviewView) findViewById(R.id.previewView);
 
         //Camera
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+
+
 
         cameraProviderFuture.addListener(() -> {
             try {
@@ -81,6 +140,18 @@ public class newMainActivity extends AppCompatActivity{
         //FOR DEBUGGING PURPOSES
         debugFunction();
     }
+
+    private void populateuserinfo() {
+        db.collection("users").document(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        usernametextview.setText(documentSnapshot.get("name").toString());
+                        biotextview.setText(documentSnapshot.get("bio").toString());
+                    }
+                });
+    }
+
     void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
         Preview preview = new Preview.Builder()
                 .build();
