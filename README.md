@@ -16,6 +16,14 @@ and talks to them with a always random name and encrypted messages,
 so spoofing or decrypting is impossible!
 ```
 
+```markdown
+# Stay always connected
+With the FreaksMesh-system you always have the up-to-date data.            
+If it is enabled and your phone is offline, it will request the data from other devices
+that have FreaksLabor actively open and if this one is offline, it will request it from another device.         
+So you are never offline and you always have the latest data.        
+Don't worry, it's completely safe and you don't share your internet.
+```
 
 
 ## Join the official Google Groups to join the beta!
