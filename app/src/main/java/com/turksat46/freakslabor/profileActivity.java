@@ -1,5 +1,6 @@
 package com.turksat46.freakslabor;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -10,6 +11,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,9 +20,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
+import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +43,8 @@ public class profileActivity extends AppCompatActivity {
 
 
     FloatingActionButton backButton;
+
+    ImageView backButton2;
     ImageView profileimg;
     TextView nameHolder;
     TextView bioHolder;
@@ -47,12 +54,30 @@ public class profileActivity extends AppCompatActivity {
     String name;
     String bio;
 
+    Friendship friendshipManager;
+    Button addAsFriendButton;
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        Intent appLinkIntent = getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
+
+        handleIntent(getIntent());
+
+        friendshipManager = new Friendship(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+        addAsFriendButton = (Button) findViewById(R.id.addAsFriendButton);
+        addAsFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                friendshipManager.sendFriendRequest(uid);
+            }
+        });
 
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
@@ -87,6 +112,14 @@ public class profileActivity extends AppCompatActivity {
             }
         });
 
+        backButton2 = (ImageView)findViewById(R.id.imageView5);
+        backButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         profileimg = (ImageView)findViewById(R.id.largeprofpic);
 
         nameHolder=(TextView)findViewById(R.id.profileusernameText);
@@ -97,15 +130,14 @@ public class profileActivity extends AppCompatActivity {
 
         initRecyclerView();
 
-        Bitmap bitmap = ((BitmapDrawable)profileimg.getDrawable()).getBitmap ();
+        Handler mHandler = new Handler();
 
-        Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-            public void onGenerated(Palette palette) {
-                // Do something with colors...
-                gradientColor = palette.getDominantColor(Color.BLUE);
-                FillCustomGradient(findViewById(R.id.background));
-            }
-        });
+
+        FirebaseImageLoader.loadImage(this, uid, profileimg, findViewById(R.id.background));
+
+        Bitmap bitmap = ((BitmapDrawable)profileimg.getDrawable()).getBitmap ();
+        Bitmap bmp = ((BitmapDrawable) getResources()
+                .getDrawable(R.drawable.img)).getBitmap();
 
         db.collection("users").document(uid).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -114,8 +146,27 @@ public class profileActivity extends AppCompatActivity {
                         name = (String) documentSnapshot.get("name");
                         bio = (String) documentSnapshot.get("bio");
                         setText();
+
                     }
                 });
+    }
+
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        String appLinkAction = intent.getAction();
+        Uri appLinkData = intent.getData();
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
+            String userId = appLinkData.getLastPathSegment();
+            uid = userId;
+        }
+    }
+
+    private void getUser(){
+
     }
 
     private void setText() {
@@ -134,36 +185,6 @@ public class profileActivity extends AppCompatActivity {
         win.setAttributes(winParams);
     }
 
-    public void FillCustomGradient(View v) {
-        final View view = v;
-        Drawable[] layers = new Drawable[1];
-
-        ShapeDrawable.ShaderFactory sf = new ShapeDrawable.ShaderFactory() {
-            @Override
-            public Shader resize(int width, int height) {
-                LinearGradient lg = new LinearGradient(
-                        0,
-                        0,
-                        0,
-                        view.getHeight(),
-                        new int[] {
-                                gradientColor, // please input your color from resource for color-4
-                                Color.parseColor("#000000"),
-                                },
-                        new float[] { 0.09f, 1.5f },
-                        Shader.TileMode.CLAMP);
-                return lg;
-            }
-        };
-        PaintDrawable p = new PaintDrawable();
-        p.setShape(new RectShape());
-        p.setShaderFactory(sf);
-        p.setCornerRadii(new float[] { 1, 4, 4, 1, 0, 0, 0, 0 });
-        layers[0] = (Drawable) p;
-
-        LayerDrawable composite = new LayerDrawable(layers);
-        view.setBackgroundDrawable(composite);
-    }
 
     public void initRecyclerView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);

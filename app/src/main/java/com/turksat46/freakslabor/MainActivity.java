@@ -578,6 +578,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     public void onSuccess(Void unused) {
                         Log.v("Nearby Service", "Now advertising endpoint " + mName);
                         onAdvertisingStarted();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -624,6 +625,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     @Override
                     public void onSuccess(Void unused) {
                         onDiscoveryStarted();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -659,6 +661,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         @Override
                         public void onSuccess(Void unused) {
                             //Successfully requested a connection.
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -822,6 +825,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     @Override
                     public void onSuccess(Void unused) {
                         Log.v("Nearby Service", String.format("sendPayload(): Successfully sent %s",payload.toString()));
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

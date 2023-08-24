@@ -356,6 +356,7 @@ public class ownprofile extends AppCompatActivity {
                                                 public void onSuccess(Uri uri) {
                                                     StoragefilePath = uri.getPath();
                                                     Log.e("DownloadURL", StoragefilePath);
+
                                                 }
                                             });
 
@@ -367,7 +368,6 @@ public class ownprofile extends AppCompatActivity {
                                                     "Saved!",
                                                     Toast.LENGTH_SHORT)
                                             .show();
-
 
                                 }
                             })

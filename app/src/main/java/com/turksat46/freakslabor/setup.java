@@ -141,6 +141,7 @@ public class setup extends AppCompatActivity {
         if(result.isSuccess()){
             account = result.getSignInAccount();
             idToken = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            String realIdToken = account.getIdToken();
             name = account.getDisplayName();
             email = account.getEmail();
 
@@ -156,7 +157,7 @@ public class setup extends AppCompatActivity {
             //startAdvertisment();
 
             // you can store user data to SharedPreference
-            AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+            AuthCredential credential = GoogleAuthProvider.getCredential(realIdToken, null);
             firebaseAuthWithGoogle(credential);
             //
         }else{

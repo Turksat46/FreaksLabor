@@ -69,7 +69,8 @@ public class PersonRecyclerViewAdapter extends RecyclerView.Adapter<PersonRecycl
         viewholder = holder;
 
         try {
-            holder.image.setImageResource(data[position].icon);
+            //holder.image.setImageResource(data[position].icon);
+            FirebaseImageLoader.loadImage(mContext, data[position].uid, viewholder.image);
             //Change background
             Bitmap bitmap = ((BitmapDrawable)holder.image.getDrawable()).getBitmap();
             Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
@@ -85,7 +86,9 @@ public class PersonRecyclerViewAdapter extends RecyclerView.Adapter<PersonRecycl
         }
 
         try {
-            holder.name.setText(data[position].name);
+            //holder.name.setText(data[position].name);
+
+            FirebaseDataGrabber.getName(data[position].uid, holder.name);
         }catch (Exception e){
             holder.name.setText("No name!");
             Log.w("RecyclerViewAdapter", "ERROR "+e.toString());
@@ -102,7 +105,7 @@ public class PersonRecyclerViewAdapter extends RecyclerView.Adapter<PersonRecycl
                 //Intent intent = new Intent(mContext ,profileActivity.class);
                 //intent.putExtra("name", holder.name.getText());
                 //mContext.startActivity(intent);
-                onClickOnProfile();
+                onClickOnProfile(position);
             }
         });
 
@@ -115,7 +118,7 @@ public class PersonRecyclerViewAdapter extends RecyclerView.Adapter<PersonRecycl
                 //Intent intent = new Intent(mContext ,profileActivity.class);
                 //intent.putExtra("name", holder.name.getText());
                 //mContext.startActivity(intent);
-                onClickOnProfile();
+                onClickOnProfile(position);
             }
         });
     }
@@ -158,9 +161,9 @@ public class PersonRecyclerViewAdapter extends RecyclerView.Adapter<PersonRecycl
 
 
 
-    public void onClickOnProfile(){
+    public void onClickOnProfile(int position){
         Intent intent = new Intent(mContext, profileActivity.class);
-        intent.putExtra("uid", data[0].uid);
+        intent.putExtra("uid", data[position].uid);
         mContext.startActivity(intent);
     }
 

@@ -175,6 +175,7 @@ q
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.w("Firebase Storage", "Upload successful!");
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

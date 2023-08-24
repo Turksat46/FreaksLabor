@@ -17,14 +17,14 @@ import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowInsets;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
-
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.turksat46.freakslabor.databinding.ActivityStartingBinding;
 
 public class StartingActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences = null;
+
+    ProgressBar progressBar;
 
 
     @Override
@@ -33,6 +33,8 @@ public class StartingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_starting);
         getSupportActionBar().hide();
 
+        progressBar = (ProgressBar)findViewById(R.id.loadingBar);
+        progressBar.setVisibility(View.GONE);
         sharedPreferences= getSharedPreferences("cred",MODE_PRIVATE);
 
         final VideoView videoview = (VideoView) findViewById(R.id.videoView2);
@@ -75,8 +77,19 @@ public class StartingActivity extends AppCompatActivity {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 videoview.start();
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                }, 3000);
+
+
             }
         });
+
+
     }
 
     @Override

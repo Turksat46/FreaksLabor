@@ -61,26 +61,45 @@
         android:layout_width="match_parent"
         android:layout_height="410dp"
         android:layout_marginTop="30dp"
+        android:foreground="@drawable/baseline_edit_24"
+        android:foregroundGravity="bottom|center"
         android:transitionName="profileimgtrans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titlecard"
         app:srcCompat="@drawable/img" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:maxLength="15"
-        android:singleLine="true"
-        android:textColor="#FFFFFF"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        app:cardBackgroundColor="#252525"
+        app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileuserimg" />
+        app:layout_constraintTop_toBottomOf="@+id/profileuserimg">
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            style="@android:style/Widget.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:elegantTextHeight="true"
+            android:ems="10"
+            android:hint="Username (you can change it later...)"
+            android:inputType="textPersonName"
+            android:maxLength="15"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#7EFFFFFF" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/profileusernameText"
@@ -97,20 +116,36 @@
         app:layout_constraintTop_toBottomOf="@+id/profileuserimg"
         tools:visibility="gone" />
 
-    <EditText
-        android:id="@+id/editTextBio"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Bio"
-        android:inputType="textPersonName"
-        android:maxLength="100"
-        android:singleLine="true"
-        android:textColor="#FFFFFF"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardBackgroundColor="#252525"
+        app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
+        <EditText
+            android:id="@+id/editTextBio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:elegantTextHeight="true"
+            android:ems="10"
+            android:hint="Bio (tells us something about you)"
+            android:inputType="textPersonName"
+            android:maxLength="100"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#7EFFFFFF" />
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/savebutton"
@@ -119,11 +154,9 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextBio" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
